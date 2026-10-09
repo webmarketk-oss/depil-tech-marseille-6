@@ -192,7 +192,7 @@ export default function Home() {
       const nom = nameParts.slice(1).join(" ");
       try {
         await fetch(
-          "https://www.bookeai.fr/api/leads?center=depil-tech-marseille-6&source=landing",
+          "https://www.bookeai.fr/api/leads?center=depil-tech-marseille-6-prefecture&source=landing",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -449,3 +449,4 @@ export default function Home() {
     </main>
   );
 }
+
