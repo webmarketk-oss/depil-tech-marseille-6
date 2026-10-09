@@ -186,6 +186,30 @@ export default function Home() {
           body: JSON.stringify(payload),
         });
       }
+
+      const nameParts = payload.full_name.trim().split(/\s+/).filter(Boolean);
+      const prenom = nameParts[0] ?? "";
+      const nom = nameParts.slice(1).join(" ");
+      try {
+        await fetch(
+          "https://www.bookeai.fr/api/leads?center=depil-tech-marseille-6&source=landing",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              first_name: prenom,
+              last_name: nom,
+              email: payload.email,
+              phone: payload.phone,
+              offre: "Épilation laser Marseille 6",
+              commentaire: `Zones à traiter : ${selectedZones.join(", ") || "non précisé"}`,
+            }),
+          },
+        );
+      } catch {
+        // Bookea ne doit pas bloquer la demande Marseille 6.
+      }
+
       track("Lead", {
         content_name: "Bilan laser offert",
         center: CITY_NAME,
@@ -313,6 +337,9 @@ export default function Home() {
             Remplissez vos coordonnées pour accéder à votre offre jusqu&apos;à
             -30%.
           </h2>
+          <p className="helper-text">
+            Zone(s) à traiter : {selectedZones.join(", ")}
+          </p>
 
           <form className="lead-form" onSubmit={submitLead}>
             <label>
